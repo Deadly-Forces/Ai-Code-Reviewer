@@ -24,7 +24,7 @@ export interface ReviewResult {
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 export async function getReview(code: string, language: string): Promise<ReviewResult> {
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = process.env.OPENROUTER_API_KEY?.trim();
     const model = process.env.OPENROUTER_MODEL || 'google/gemini-2.0-flash-001';
 
     if (!apiKey || apiKey === 'your_openrouter_api_key_here') {
@@ -51,6 +51,7 @@ export async function getReview(code: string, language: string): Promise<ReviewR
     if (!response.ok) {
         const errorBody = await response.text();
         if (response.status === 401 || response.status === 403) {
+            console.error('OpenRouter Auth Error:', response.status, errorBody);
             throw new Error('Invalid OpenRouter API key. Check your .env configuration.');
         }
         if (response.status === 429) {
@@ -69,8 +70,11 @@ export async function getReview(code: string, language: string): Promise<ReviewR
     // Strip <think>...</think> blocks from reasoning models (e.g. DeepSeek R1)
     text = text.replace(/<think>[\s\S]*?<\/think>/gi, '').trim();
 
-    // Strip markdown code fences if present
-    text = text.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+    // Strip markdown code fences if present (handle ```json, ```JSON, ``` etc.)
+    text = text.replace(/```(?:json|JSON)?\s*\n?/g, '').trim();
+
+    // Remove control characters that can break JSON parsing
+    text = text.replace(/[\x00-\x09\x0B\x0C\x0E-\x1F]/g, '');
 
     // Try to extract JSON object if there's surrounding text
     const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -80,8 +84,16 @@ export async function getReview(code: string, language: string): Promise<ReviewR
 
     try {
         return JSON.parse(text) as ReviewResult;
-    } catch {
-        console.error('Failed to parse AI response:', text.substring(0, 500));
-        throw new Error('AI returned an invalid response. Please try again.');
+    } catch (parseErr) {
+        console.error('Failed to parse AI response. Raw text:\n', text.substring(0, 1000));
+        // Attempt a second pass: fix common JSON issues (trailing commas)
+        try {
+            const cleaned = text
+                .replace(/,\s*}/g, '}')
+                .replace(/,\s*]/g, ']');
+            return JSON.parse(cleaned) as ReviewResult;
+        } catch {
+            throw new Error('AI returned an invalid response. Please try again.');
+        }
     }
 }
