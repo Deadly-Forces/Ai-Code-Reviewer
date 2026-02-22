@@ -107,9 +107,19 @@ body {
 }
 
 @keyframes float {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(25px, -40px) scale(1.04); }
-  66% { transform: translate(-30px, 20px) scale(0.96); }
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  33% {
+    transform: translate(25px, -40px) scale(1.04);
+  }
+
+  66% {
+    transform: translate(-30px, 20px) scale(0.96);
+  }
 }
 
 /* ─── Glass Card System ─── */
@@ -117,8 +127,8 @@ body {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border-glass);
   border-radius: 16px;
-  backdrop-filter: blur(20px) saturate(1.2);
   -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  backdrop-filter: blur(20px) saturate(1.2);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.02) inset,
     0 8px 40px rgba(0, 0, 0, 0.4),
@@ -206,13 +216,22 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ─── Animations ─── */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in-up {
@@ -220,8 +239,15 @@ body {
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(-8px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .animate-slide-in {
@@ -229,8 +255,13 @@ body {
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 .shimmer-btn {
@@ -242,22 +273,27 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.08) 45%,
-    rgba(255, 255, 255, 0.12) 50%,
-    rgba(255, 255, 255, 0.08) 55%,
-    transparent 70%
-  );
+  background: linear-gradient(105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.08) 45%,
+      rgba(255, 255, 255, 0.12) 50%,
+      rgba(255, 255, 255, 0.08) 55%,
+      transparent 70%);
   background-size: 200% 100%;
   animation: shimmer 3s ease-in-out infinite;
   pointer-events: none;
 }
 
 @keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 12px rgba(129, 140, 248, 0.15); }
-  50% { box-shadow: 0 0 24px rgba(129, 140, 248, 0.3); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 12px rgba(129, 140, 248, 0.15);
+  }
+
+  50% {
+    box-shadow: 0 0 24px rgba(129, 140, 248, 0.3);
+  }
 }
 
 .pulse-glow {
@@ -265,8 +301,15 @@ body {
 }
 
 @keyframes countUp {
-  from { opacity: 0; transform: scale(0.5); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .animate-count {
@@ -275,7 +318,9 @@ body {
 
 /* Score ring animation */
 @keyframes scoreRing {
-  from { stroke-dashoffset: 251.2; }
+  from {
+    stroke-dashoffset: 251.2;
+  }
 }
 
 .score-ring-animated {
@@ -350,7 +395,9 @@ body {
 
 /* ─── Upload zone animated border ─── */
 @keyframes dashMove {
-  to { stroke-dashoffset: -20; }
+  to {
+    stroke-dashoffset: -20;
+  }
 }
 
 .upload-zone {
